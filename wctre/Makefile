@@ -1,4 +1,8 @@
 make:
 	g++ -std=c++17 treread.cpp xtre.cpp -o wctre
+
+windows:
+	i686-w64-mingw32-g++ -std=c++17 -fPIC -static -static-libgcc -static-libstdc++ treread.cpp xtre.cpp -o wctre.exe
+
 clean:
 	rm wctre

@@ -15,7 +15,11 @@ void extract_file(char* trename, string file_name, unsigned int offset, unsigned
 #endif
 	fs::path file_path = file_name;
 	if (file_path.has_parent_path()){
-	string fppath = file_path.parent_path();
+#ifdef __linux__
+		string fppath = file_path.parent_path();
+#else
+		wstring fppath = file_path.parent_path();
+#endif
 		fs::create_directories(fppath);
 	}
 #ifdef SUPER_VERBOSE
