@@ -20,10 +20,8 @@ jobs:
                   make make windows
                   tar czf linux-amd64.tar.gz wctre
                   zip c windows-amd64.zip wctre.exe
-            - uses: "marvinpinto/action-automatic-releases@latest"
-              with:
-                repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                prerelease: false
-                files: |
-                  wctre/linux-amd64.tar.gz
-                  wctre/windows-amd64.zip
+            - uses: AButler/upload-release-assets@v2.0
+                with:
+                files: 'artifacts/*;packages/*.nupkg'
+                repo-token: ${{ secrets.GITHUB_TOKEN }}
+                files: 'wctre/linux-amd64.tar.gz;wctre/windows-amd64.zip'
