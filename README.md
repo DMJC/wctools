@@ -6,3 +6,4 @@ The tools are written for Linux, but they can be compiled/run on Windows. Only t
   - Supports Extracting Privateer/Strike Commander/Armada data.
   - .XTRE detection is working, extraction of WC3/4 data is in progress
   
+Special Thanks to Mario 'HCL' Brito for reverse engineering and documenting these game formats. His documentation is available from his website at hcl.solsector.net. 
