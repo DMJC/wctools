@@ -1,0 +1,28 @@
+name: goreleaser
+
+on:
+    push:
+        tags:
+            - 'v*.*.*'
+
+jobs:
+    ubuntubuild:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
+            -   name: Build
+                run: |
+                  sudo apt-get install -y build-essential gcc mingw-w64-tools zip gzip tar g++-mingw-w64-x86-64
+                  cd wctre
+                  make make windows
+                  tar czf linux-amd64.tar.gz wctre
+                  zip windows-amd64.zip wctre.exe
+            - name: Upload release binaries
+              uses: alexellis/upload-assets@0.4.0
+              env:
+                GITHUB_TOKEN: ${{ github.token }}
+              with:
+                asset_paths: '["wctre/linux-amd64.tar.gz","wctre/windows-amd64.zip"]'
