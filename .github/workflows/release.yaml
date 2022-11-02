@@ -22,6 +22,5 @@ jobs:
                   zip c windows-amd64.zip wctre.exe
             - uses: AButler/upload-release-assets@v2.0
               with:
-                files: 'artifacts/*;packages/*.nupkg'
                 repo-token: ${{ secrets.GITHUB_TOKEN }}
                 files: 'wctre/linux-amd64.tar.gz;wctre/windows-amd64.zip'
