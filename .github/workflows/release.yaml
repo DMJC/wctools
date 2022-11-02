@@ -15,7 +15,7 @@ jobs:
                     fetch-depth: 0
             -   name: Build
                 run: |
-                  sudo apt-get install -y build-essential gcc mingw-w64-tools zip gzip tar
+                  sudo apt-get install -y build-essential gcc mingw-w64-tools zip gzip tar gcc-mingw-w64-i686-win32 g++-mingw-w64-x86-64-win32
                   cd wctre
                   make make windows
                   tar czf linux-amd64.tar.gz wctre
