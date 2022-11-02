@@ -19,7 +19,7 @@ jobs:
                   cd wctre
                   make make windows
                   tar czf linux-amd64.tar.gz wctre
-                  zip cf windows-amd64.zip wctre.exe
+                  zip windows-amd64.zip wctre.exe
             - name: Upload release binaries
               uses: alexellis/upload-assets@0.4.0
               env:
