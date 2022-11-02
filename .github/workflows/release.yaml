@@ -20,11 +20,9 @@ jobs:
                   make make windows
                   tar czf linux-amd64.tar.gz wctre
                   zip c windows-amd64.zip wctre.exe
-            - uses: shogo82148/actions-upload-release-asset@v1
+            - name: Upload release binaries
+              uses: alexellis/upload-assets@0.4.0
+              env:
+                GITHUB_TOKEN: ${{ github.token }}
               with:
-                upload_url: ${{ steps.create_release.outputs.upload_url }}
-                asset_path: wctre/linux-amd64.tar.gz
-            - uses: shogo82148/actions-upload-release-asset@v1
-              with:
-                upload_url: ${{ steps.create_release.outputs.upload_url }}
-                asset_path: wctre/windows-amd64.zip
+                asset_paths: '["wctre/linux-amd64.tar.gz","wctre/windows-amd64.zip"]'
