@@ -12,27 +12,31 @@ void read_section1(fstream &trefile, int sec1_address, int sec2_address, int sec
 		crc_address |= crc_buffer[0];crc_address |= crc_buffer[1] << 8;crc_address |= crc_buffer[2] << 16;crc_address |= crc_buffer[3] << 24;
 		unsigned int offset_address = 0;
 		offset_address |= offset_buffer[0];offset_address |= offset_buffer[1] << 8;offset_address |= offset_buffer[2] << 16;offset_address |= offset_buffer[3] << 24;
-		if (crc_address == 0){}else{
-			cout << "CRC: " << crc_address << " Off Addr: " << offset_address;
-			if (offset_address < sec3_address){
-				read_section2(trefile, offset_address);
+		unsigned int jump_back;
+		jump_back = trefile.tellg();
+		if (crc_address == 0){
 			}else{
-				read_section3(trefile, offset_address);
+			cout << "CRC: " << crc_address << " Off: " << offset_address;
+			if (offset_address > 0 && offset_address >= sec3_address){
+				read_section3(trefile, offset_address, jump_back);
+			}else if(offset_address > 0 && offset_address < sec3_address) {
+				read_section2(trefile, offset_address, jump_back);
+			}else{
 			}
 		}
 	}
 }
 
-void read_section2(fstream &trefile, unsigned int offset_address){
+void read_section2(fstream &trefile, unsigned int offset_address, unsigned int jump_back){
 	trefile.seekg(offset_address);
-	cout << " Sect2 Addr: " << offset_address << endl;
         unsigned char string_size_buf;
         trefile.read((char*)&string_size_buf,1);
         unsigned int string_size = 0;
 	string_size = string_size_buf;
-	cout << " Name Size: " << string_size;
-/*        char * string_buf[string_size];
-        string_buf = new char[string_size];*/
+//	cout << " Name Size: " << string_size;
+//        char * string_buf[string_size];
+	char * string_buf;
+        string_buf = new char[string_size];
 	char filename[string_size];
         trefile.read((char*)&filename,string_size);
 	cout << " File: " << filename;
@@ -40,20 +44,23 @@ void read_section2(fstream &trefile, unsigned int offset_address){
 	trefile.read((char*)&offset_buffer,4);
 	unsigned int offset_address2 = 0;
 	offset_address2 |= offset_buffer[0];offset_address2 |= offset_buffer[1] << 8;offset_address2 |= offset_buffer[2] << 16;offset_address2 |= offset_buffer[3] << 24;
-	cout << " Offset 2 Address: " << offset_address2 << endl;
+	cout << " Offset 3 Address: " << offset_address2;
+	read_section3(trefile, offset_address2, jump_back);
 }
 
-void read_section3(fstream &trefile, unsigned int offset_address){
+void read_section3(fstream &trefile, unsigned int offset_address, unsigned int jump_back){
+	trefile.seekg(offset_address);
 	unsigned char offset_buf[4];
 	trefile.read((char*)&offset_buf,4);
 	unsigned int offset = 0;
 	offset |= offset_buf[0];offset |= offset_buf[1] << 8;offset |= offset_buf[2] << 16;offset |= offset_buf[3] << 24;
-	cout << " Offset: " << offset;
+	cout << " Data: " << offset;
 	unsigned char size_buf[4];
 	trefile.read((char*)&size_buf,4);
 	unsigned int size = 0;
 	size |= size_buf[0];size |= size_buf[1] << 8;size |= size_buf[2] << 16;size |= size_buf[3] << 24;
-	cout << " Uncompressed Size: " << size << endl;
+	cout << " Decomp: " << size << endl;
+	trefile.seekg(jump_back);
 }
 
 void read_xtre(fstream &trefile){
